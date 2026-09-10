@@ -361,8 +361,7 @@ router.post("/documents/upload", upload.single("file"), async (req, res): Promis
 
   // Only mark READY if we have text and analysis
   const ready = storedText.trim().length > 0 && analysis.summary.length > 0;
-  await db.documentsTable.update(created.id).set({ processingStatus: ready ? "ready" : "pending" }).where(eq(documentsTable.id, created.id));
-
+  await db.update(documentsTable).set({ processingStatus: ready ? "ready" : "pending" }).where(eq(documentsTable.id, created.id));
   res.status(201).json(CreateDocumentResponse.parse(toDocument(created)));
 });
 
