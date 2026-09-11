@@ -7,6 +7,7 @@ import {
   Paperclip, Plus, Search, Send, Settings2, Sparkles, Target, Trash2, TrendingUp, Upload, X, Zap,
 } from 'lucide-react';
 import {
+  setBaseUrl,
   createConversation, createConversationMessage, createDocument, createGoal, createMeeting, createMemory, createMilestone, createReminder, deleteConversation, deleteDocument,
   deleteGoal, deleteMeeting, deleteMemory, deleteReminder, getConversation, getGetCurrentUserQueryKey, getGetDashboardQueryKey,
   getGetDocumentQueryKey, getGetGoalQueryKey, getListConversationsQueryKey,
@@ -444,5 +445,9 @@ function AppRouter() {
   const user = current.data;
   return <Shell user={user}><Switch><Route path="/dashboard" component={DashboardPage} /><Route path="/chat" component={ChatPage} /><Route path="/memory" component={MemoryPage} /><Route path="/knowledge" component={KnowledgePage} /><Route path="/goals" component={GoalsPage} /><Route path="/growth" component={GrowthPage} /><Route path="/meetings" component={MeetingsPage} /><Route path="/documents" component={DocumentsPage} /><Route path="/analytics" component={AnalyticsPage} /><Route path="/settings"><SettingsPage user={user} /></Route><Route component={NotFound} /></Switch></Shell>;
 }
-function App() { useEffect(() => { document.documentElement.classList.toggle('dark', localStorage.getItem('jarvis-theme') === 'dark'); }, []); return <QueryClientProvider client={queryClient}><DemoProvider><WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}><AppRouter /></WouterRouter></DemoProvider></QueryClientProvider>; }
+function App() {
+  setBaseUrl(import.meta.env.VITE_API_URL || "");
+  useEffect(() => { document.documentElement.classList.toggle('dark', localStorage.getItem('jarvis-theme') === 'dark'); }, []);
+  return <QueryClientProvider client={queryClient}><DemoProvider><WouterRouter base={import.meta.env.BASE_URL.replace(/\/$/, '')}><AppRouter /></WouterRouter></DemoProvider></QueryClientProvider>;
+}
 export default App;
